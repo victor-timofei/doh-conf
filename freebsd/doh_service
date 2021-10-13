@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# PROVIDE: doh
+# REQUIRE: networking
+# KEYWORD:
+
+. /etc/rc.subr
+
+name="doh"
+rcvar="doh_enable"
+source_dns="1.1.1.1:53"
+doh_args="-u ${source_dns}"
+doh_command="/usr/local/bin/doh-proxy ${doh_args}"
+pidfile="/var/run/doh/doh.pid"
+command="/usr/sbin/daemon"
+command_args="-P ${pidfile} -r -f ${doh_command}"
+
+load_rc_config $name
+: ${doh_enable:=no}
+
+run_rc_command "$1"
